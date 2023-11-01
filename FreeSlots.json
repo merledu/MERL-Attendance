@@ -1,0 +1,37 @@
+{
+    "Monday": {
+        "21SEB":"11:50AM",
+        "21SEA":"9:20AM",
+        "21CSA":"10:50AM",
+        "22spSEA":"10:50AM",
+        "22spCSA":"None"
+    },
+    "Tuesday": {
+        "21SEB":"10:50AM",
+        "21SEA":"9:20AM",
+        "21CSA":"9:20AM",
+        "22spSEA":"9:20AM",
+        "22spCSA":"9:20AM"
+    },
+    "Wednesday":{
+        "21SEB":"9:50AM",
+        "21SEA":"9:20AM",
+        "21CSA":"11:50AM",
+        "22spSEA":"11:50AM",
+        "22spCSA":"2:50PM"
+    },
+    "Thursday":{
+        "21SEB":"9:20AM",
+        "21SEA":"10:50AM",
+        "21CSA":"3:50PM",
+        "22spSEA":"9:20AM",
+        "22spCSA":"9:20AM"
+    },
+    "Friday":{
+        "21SEB":"9:20AM",
+        "21SEA":"9:20AM",
+        "21CSA":"11:50AM",
+        "22spSEA":"9:20AM",
+        "22spCSA":"9:20AM"
+    }
+}
