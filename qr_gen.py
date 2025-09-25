@@ -1,33 +1,33 @@
+import os
 import openpyxl
 import qrcode
-from mail_attachment import send_mail
 
-#data_collection_to generate content in qr
+# Load Excel data
 data = openpyxl.load_workbook("data.xlsx")
 sheet = data.active
-#print(sheet)
-names=[]
-mails=[]
 
-for i in range(1,54):
-    temp=sheet.cell(i,1)
-    names.append(temp.value)
-    # temp2=sheet.cell(i,2)
-    # mails.append(temp2.value)
-        
+# Create output folder if it does not exist
+os.makedirs("QR", exist_ok=True)
 
-print(names)
-print(mails)
+ids = []
+names = []
 
-#qr code generation
+# Assuming first row contains data (not headers) and first 10 rows are required
+for i in range(1, 12):  
+    id_cell = sheet.cell(i, 1).value   # First column -> ID
+    name_cell = sheet.cell(i, 2).value # Second column -> Name
 
-for i in names:
-    img = qrcode.make(i)
-    img.save('QR/{}.png'.format(i))
+    ids.append(id_cell)
+    names.append(name_cell)
 
-#sending mail
+# Print to check
+print("IDs:", ids)
+print("Names:", names)
 
-# for i in range(len(names)):
-#     send_mail(mails[i],names[i])
-
-#This is a one time process
+# Generate QR codes
+for idx in range(len(ids)):
+    qr_content = ids[idx]      # Embed ID inside QR
+    filename = names[idx]      # Use Name as filename
+    
+    img = qrcode.make(qr_content)
+    img.save(f"QR/{filename}.png")
