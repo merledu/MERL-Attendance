@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERL Attendance Report</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .email-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><circle cx="50" cy="50" r="40" fill="white"/></svg>');
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header-icon {
+            font-size: 1.8em;
+            animation: bounce 2s infinite;
+        }
+        
+        .date-display {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            /* display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; */
+            padding: 30px;
+            background: #f8f9fa;
+            display: flex;
+            /* justify-content: space-between;
+            align-items: center; */
+            width: 100%;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s ease;
+            width: 33.3%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        /* Tables Section */
+        .tables-section {
+            padding: 30px;
+        }
+        
+        .table-container {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .section-icon {
+            font-size: 1.3em;
+        }
+        
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .attendance-table thead {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+        }
+        
+        .attendance-table th {
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        
+        .attendance-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .attendance-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+        
+        .attendance-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .attendance-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-present {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .status-absent {
+            background: #fdeaea;
+            color: #e74c3c;
+        }
+        
+        /* Time indicators */
+        .time-early {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .time-late {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        .time-very-late {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .bot-signature {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .bot-icon {
+            font-size: 1.3em;
+        }
+        
+        .footer-note {
+            opacity: 0.8;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .attendance-table {
+                font-size: 0.9em;
+            }
+            
+            .attendance-table th,
+            .attendance-table td {
+                padding: 12px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .tables-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                MERL Attendance Report
+            </h1>
+            <div class="date-display">Today, [DATE_PLACEHOLDER]</div>
+        </div>
+        
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">[PRESENT_COUNT]</div>
+                <div class="stat-label">Present Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">[ABSENT_COUNT]</div>
+                <div class="stat-label">Absent Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">[ON_TIME_COUNT]</div>
+                <div class="stat-label">On Time Arrivals</div>
+            </div>
+        </div>
+        
+        <!-- Tables Section -->
+        <div class="tables-section">
+            <!-- Present Employees -->
+            <div class="table-container">
+                <div class="section-title">
+                    Present Employees
+                </div>
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Arrival Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        [PRESENT_DATA_PLACEHOLDER]
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Absent Employees -->
+            <div class="table-container">
+                <div class="section-title">
+                    Absent Employees
+                </div>
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        [ABSENT_DATA_PLACEHOLDER]
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>🤖 Sent by MERL Attendance Bot</div>
+            <div class="footer-note">
+                This is an automated attendance report generated on [DATE_PLACEHOLDER].<br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

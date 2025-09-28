@@ -1,0 +1,34 @@
+{
+    "no-reply@helpdesk": {
+        "MAIL_SERVER": "helpdesk.merledupk.org",
+        "MAIL_PORT": 465,
+        "MAIL_USE_SSL": true,
+        "MAIL_USERNAME": "no-reply@helpdesk.merledupk.org",
+        "MAIL_PASSWORD": "helloMERL2301@$",
+        "MAIL_DEFAULT_SENDER": "no-reply@helpdesk.merledupk.org"
+    },
+    "assistant@socstudio": {
+        "MAIL_SERVER": "socstudio.merledupk.org",
+        "MAIL_PORT": 587,
+        "MAIL_USE_SSL": true,
+        "MAIL_USERNAME": "assistant@socstudio.merledupk.org",
+        "MAIL_PASSWORD": "helloMERL2301@$",
+        "MAIL_DEFAULT_SENDER": "assistant@socstudio.merledupk.org"
+    },
+    "attendance-bot@bots":{
+        "MAIL_SERVER": "bots.merledupk.org",
+        "MAIL_PORT": 587,
+        "MAIL_USE_SSL": true,
+        "MAIL_USERNAME": "attendance-bot@bots.merledupk.org",
+        "MAIL_PASSWORD": "helloMERL2301@$",
+        "MAIL_DEFAULT_SENDER": "attendance-bot@bots.merledupk.org"
+    },
+    "assistant@hive":{
+        "MAIL_SERVER": "hive.merledupk.org",
+        "MAIL_PORT": 587,
+        "MAIL_USE_SSL": true,
+        "MAIL_USERNAME": "assistant@hive.merledupk.org",
+        "MAIL_PASSWORD": "helloMERL2301@$",
+        "MAIL_DEFAULT_SENDER": "assistant@hive.merledupk.org"
+    }
+}
